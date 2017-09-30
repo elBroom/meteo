@@ -17,7 +17,140 @@ var (
 	_ easyjson.Marshaler
 )
 
-func easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema(in *jlexer.Lexer, out *MeteoData) {
+func easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema(in *jlexer.Lexer, out *Indication) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		if isTopLevel {
+			in.Consumed()
+		}
+		in.Skip()
+		return
+	}
+	in.Delim('{')
+	for !in.IsDelim('}') {
+		key := in.UnsafeString()
+		in.WantColon()
+		if in.IsNull() {
+			in.Skip()
+			in.WantComma()
+			continue
+		}
+		switch key {
+		case "value":
+			out.Value = float32(in.Float32())
+		default:
+			in.SkipRecursive()
+		}
+		in.WantComma()
+	}
+	in.Delim('}')
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema(out *jwriter.Writer, in Indication) {
+	out.RawByte('{')
+	first := true
+	_ = first
+	if !first {
+		out.RawByte(',')
+	}
+	first = false
+	out.RawString("\"value\":")
+	out.Float32(float32(in.Value))
+	out.RawByte('}')
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v Indication) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v Indication) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *Indication) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *Indication) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema(l, v)
+}
+func easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema1(in *jlexer.Lexer, out *DisignationList) {
+	isTopLevel := in.IsStart()
+	if in.IsNull() {
+		in.Skip()
+		*out = nil
+	} else {
+		in.Delim('[')
+		if *out == nil {
+			if !in.IsDelim(']') {
+				*out = make(DisignationList, 0, 1)
+			} else {
+				*out = DisignationList{}
+			}
+		} else {
+			*out = (*out)[:0]
+		}
+		for !in.IsDelim(']') {
+			var v1 Disignation
+			(v1).UnmarshalEasyJSON(in)
+			*out = append(*out, v1)
+			in.WantComma()
+		}
+		in.Delim(']')
+	}
+	if isTopLevel {
+		in.Consumed()
+	}
+}
+func easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema1(out *jwriter.Writer, in DisignationList) {
+	if in == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+		out.RawString("null")
+	} else {
+		out.RawByte('[')
+		for v2, v3 := range in {
+			if v2 > 0 {
+				out.RawByte(',')
+			}
+			(v3).MarshalEasyJSON(out)
+		}
+		out.RawByte(']')
+	}
+}
+
+// MarshalJSON supports json.Marshaler interface
+func (v DisignationList) MarshalJSON() ([]byte, error) {
+	w := jwriter.Writer{}
+	easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema1(&w, v)
+	return w.Buffer.BuildBytes(), w.Error
+}
+
+// MarshalEasyJSON supports easyjson.Marshaler interface
+func (v DisignationList) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema1(w, v)
+}
+
+// UnmarshalJSON supports json.Unmarshaler interface
+func (v *DisignationList) UnmarshalJSON(data []byte) error {
+	r := jlexer.Lexer{Data: data}
+	easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema1(&r, v)
+	return r.Error()
+}
+
+// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
+func (v *DisignationList) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema1(l, v)
+}
+func easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema2(in *jlexer.Lexer, out *Disignation) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -56,36 +189,36 @@ func easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema(in *jlexer.Lexer, out 
 					out.Data = (out.Data)[:0]
 				}
 				for !in.IsDelim(']') {
-					var v1 []interface{}
+					var v4 []interface{}
 					if in.IsNull() {
 						in.Skip()
-						v1 = nil
+						v4 = nil
 					} else {
 						in.Delim('[')
-						if v1 == nil {
+						if v4 == nil {
 							if !in.IsDelim(']') {
-								v1 = make([]interface{}, 0, 4)
+								v4 = make([]interface{}, 0, 4)
 							} else {
-								v1 = []interface{}{}
+								v4 = []interface{}{}
 							}
 						} else {
-							v1 = (v1)[:0]
+							v4 = (v4)[:0]
 						}
 						for !in.IsDelim(']') {
-							var v2 interface{}
-							if m, ok := v2.(easyjson.Unmarshaler); ok {
+							var v5 interface{}
+							if m, ok := v5.(easyjson.Unmarshaler); ok {
 								m.UnmarshalEasyJSON(in)
-							} else if m, ok := v2.(json.Unmarshaler); ok {
+							} else if m, ok := v5.(json.Unmarshaler); ok {
 								_ = m.UnmarshalJSON(in.Raw())
 							} else {
-								v2 = in.Interface()
+								v5 = in.Interface()
 							}
-							v1 = append(v1, v2)
+							v4 = append(v4, v5)
 							in.WantComma()
 						}
 						in.Delim(']')
 					}
-					out.Data = append(out.Data, v1)
+					out.Data = append(out.Data, v4)
 					in.WantComma()
 				}
 				in.Delim(']')
@@ -104,7 +237,7 @@ func easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema(in *jlexer.Lexer, out 
 		in.Consumed()
 	}
 }
-func easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema(out *jwriter.Writer, in MeteoData) {
+func easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema2(out *jwriter.Writer, in Disignation) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -131,24 +264,24 @@ func easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema(out *jwriter.Writer, i
 		out.RawString("null")
 	} else {
 		out.RawByte('[')
-		for v3, v4 := range in.Data {
-			if v3 > 0 {
+		for v6, v7 := range in.Data {
+			if v6 > 0 {
 				out.RawByte(',')
 			}
-			if v4 == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
+			if v7 == nil && (out.Flags&jwriter.NilSliceAsEmpty) == 0 {
 				out.RawString("null")
 			} else {
 				out.RawByte('[')
-				for v5, v6 := range v4 {
-					if v5 > 0 {
+				for v8, v9 := range v7 {
+					if v8 > 0 {
 						out.RawByte(',')
 					}
-					if m, ok := v6.(easyjson.Marshaler); ok {
+					if m, ok := v9.(easyjson.Marshaler); ok {
 						m.MarshalEasyJSON(out)
-					} else if m, ok := v6.(json.Marshaler); ok {
+					} else if m, ok := v9.(json.Marshaler); ok {
 						out.Raw(m.MarshalJSON())
 					} else {
-						out.Raw(json.Marshal(v6))
+						out.Raw(json.Marshal(v9))
 					}
 				}
 				out.RawByte(']')
@@ -174,92 +307,25 @@ func easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema(out *jwriter.Writer, i
 }
 
 // MarshalJSON supports json.Marshaler interface
-func (v MeteoData) MarshalJSON() ([]byte, error) {
+func (v Disignation) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
-	easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema(&w, v)
+	easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema2(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
-func (v MeteoData) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema(w, v)
+func (v Disignation) MarshalEasyJSON(w *jwriter.Writer) {
+	easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema2(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
-func (v *MeteoData) UnmarshalJSON(data []byte) error {
+func (v *Disignation) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
-	easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema(&r, v)
+	easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema2(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *MeteoData) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema(l, v)
-}
-func easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema1(in *jlexer.Lexer, out *Indication) {
-	isTopLevel := in.IsStart()
-	if in.IsNull() {
-		if isTopLevel {
-			in.Consumed()
-		}
-		in.Skip()
-		return
-	}
-	in.Delim('{')
-	for !in.IsDelim('}') {
-		key := in.UnsafeString()
-		in.WantColon()
-		if in.IsNull() {
-			in.Skip()
-			in.WantComma()
-			continue
-		}
-		switch key {
-		case "value":
-			out.Value = float32(in.Float32())
-		default:
-			in.SkipRecursive()
-		}
-		in.WantComma()
-	}
-	in.Delim('}')
-	if isTopLevel {
-		in.Consumed()
-	}
-}
-func easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema1(out *jwriter.Writer, in Indication) {
-	out.RawByte('{')
-	first := true
-	_ = first
-	if !first {
-		out.RawByte(',')
-	}
-	first = false
-	out.RawString("\"value\":")
-	out.Float32(float32(in.Value))
-	out.RawByte('}')
-}
-
-// MarshalJSON supports json.Marshaler interface
-func (v Indication) MarshalJSON() ([]byte, error) {
-	w := jwriter.Writer{}
-	easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema1(&w, v)
-	return w.Buffer.BuildBytes(), w.Error
-}
-
-// MarshalEasyJSON supports easyjson.Marshaler interface
-func (v Indication) MarshalEasyJSON(w *jwriter.Writer) {
-	easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema1(w, v)
-}
-
-// UnmarshalJSON supports json.Unmarshaler interface
-func (v *Indication) UnmarshalJSON(data []byte) error {
-	r := jlexer.Lexer{Data: data}
-	easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema1(&r, v)
-	return r.Error()
-}
-
-// UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *Indication) UnmarshalEasyJSON(l *jlexer.Lexer) {
-	easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema1(l, v)
+func (v *Disignation) UnmarshalEasyJSON(l *jlexer.Lexer) {
+	easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema2(l, v)
 }
