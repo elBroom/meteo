@@ -9,6 +9,8 @@ import (
 
 	"strings"
 
+	"regexp"
+
 	"github.com/elBroom/meteo/app/config"
 	"github.com/elBroom/meteo/app/db"
 	"github.com/elBroom/meteo/app/model"
@@ -60,7 +62,23 @@ func GetValuesEndpoint(ctx *fasthttp.RequestCtx) {
 	pins := strings.Split(ctx.UserValue("pins").(string), ",")
 
 	var indications []model.Indication
-	db.Sql_connect().Where("Pin IN (?)", pins).Find(&indications).Order("Pin,CreatedAt")
+	query := db.Sql_connect().Where("Pin IN (?)", pins)
+
+	params := ctx.QueryArgs()
+	r, _ := regexp.Compile("^20(1|2)[0-9]-[0,1][0-9]-[0-3][0-9]$") // Y-m-d
+	if params.Has("start_date") {
+		start_date := string(params.Peek("start_date"))
+		if r.MatchString(start_date) {
+			query = query.Where("created_at::date >= ?::date", start_date)
+		}
+	}
+	if params.Has("end_date") {
+		end_date := string(params.Peek("end_date"))
+		if r.MatchString(end_date) {
+			query = query.Where("created_at::date <= ?::date", end_date)
+		}
+	}
+	query.Find(&indications).Order("Pin,CreatedAt")
 
 	pin_data := make(map[string][][]interface{})
 	for _, item := range indications {
@@ -70,6 +88,7 @@ func GetValuesEndpoint(ctx *fasthttp.RequestCtx) {
 
 	var disignations []model.Disignation
 	db.Sql_connect().Where("Pin IN (?)", pins).Find(&disignations).Order("Pin")
+
 	var data schema.DisignationList
 	for _, item := range disignations {
 		_, ok := pin_data[item.Pin]
