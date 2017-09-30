@@ -41,7 +41,7 @@ func easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema(in *jlexer.Lexer, out 
 		case "pin":
 			out.Pin = string(in.String())
 		case "create_date":
-			out.CreatedAt = int64(in.Int64())
+			out.CreateDate = int64(in.Int64())
 		default:
 			in.SkipRecursive()
 		}
@@ -70,13 +70,13 @@ func easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema(out *jwriter.Writer, i
 		out.RawString("\"pin\":")
 		out.String(string(in.Pin))
 	}
-	if in.CreatedAt != 0 {
+	if in.CreateDate != 0 {
 		if !first {
 			out.RawByte(',')
 		}
 		first = false
 		out.RawString("\"create_date\":")
-		out.Int64(int64(in.CreatedAt))
+		out.Int64(int64(in.CreateDate))
 	}
 	out.RawByte('}')
 }

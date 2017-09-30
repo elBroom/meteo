@@ -1,10 +1,7 @@
 package model
 
-import "github.com/jinzhu/gorm"
-
 type Disignation struct {
-	gorm.Model
-
+	ID    uint   `gorm:"primary_key"`
 	Pin   string `gorm:"not null;unique_index"`
 	Name  string `gorm:"not null"`
 	Color string
@@ -12,5 +9,5 @@ type Disignation struct {
 }
 
 func (Disignation) TableName() string {
-	return "disignation"
+	return "meteo_disignation"
 }

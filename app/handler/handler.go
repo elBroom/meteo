@@ -49,7 +49,7 @@ func CreteValueEndpoint(ctx *fasthttp.RequestCtx) {
 	_ = easyjson.Unmarshal(data, &indication)
 	db.Sql_connect().Create(&model.Indication{Value: indication.Value, Pin: disignation.Pin})
 
-	indication.CreatedAt = time.Now().Unix() * 1000
+	indication.CreateDate = time.Now().Unix() * 1000
 	indication.Pin = disignation.Pin
 	hub := config.GetApp().Hub
 	if hub != nil {
@@ -72,29 +72,29 @@ func GetValuesEndpoint(ctx *fasthttp.RequestCtx) {
 	query := db.Sql_connect().Where("Pin IN (?)", pins)
 
 	params := ctx.QueryArgs()
-	r, _ := regexp.Compile("^20(1|2)[0-9]-[0,1][0-9]-[0-3][0-9]$") // Y-m-d
+	r, _ := regexp.Compile("^20(1|2)[0-9]-[0,1]?[0-9]-[0-3]?[0-9]$") // Y-m-d
 	if params.Has("start_date") {
 		start_date := string(params.Peek("start_date"))
 		if r.MatchString(start_date) {
-			query = query.Where("created_at::date >= ?::date", start_date)
+			query = query.Where("create_date::date >= ?::date", start_date)
 		}
 	}
 	if params.Has("end_date") {
 		end_date := string(params.Peek("end_date"))
 		if r.MatchString(end_date) {
-			query = query.Where("created_at::date <= ?::date", end_date)
+			query = query.Where("create_date::date <= ?::date", end_date)
 		}
 	}
-	query.Find(&indications).Order("Pin,CreatedAt")
+	query.Order("pin, create_date").Find(&indications)
 
 	pin_data := make(map[string][][]interface{})
 	for _, item := range indications {
-		elem := []interface{}{item.CreatedAt.Unix() * 1000, item.Value}
+		elem := []interface{}{item.CreateDate.Unix() * 1000, item.Value}
 		pin_data[item.Pin] = append(pin_data[item.Pin], elem)
 	}
 
 	var disignations []model.Disignation
-	db.Sql_connect().Where("Pin IN (?)", pins).Find(&disignations).Order("Pin")
+	db.Sql_connect().Where("Pin IN (?)", pins).Order("pin").Find(&disignations)
 
 	var data schema.DisignationList
 	for _, item := range disignations {

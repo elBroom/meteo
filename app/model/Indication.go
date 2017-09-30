@@ -1,14 +1,15 @@
 package model
 
-import "github.com/jinzhu/gorm"
+import "time"
 
 type Indication struct {
-	gorm.Model
+	ID uint `gorm:"primary_key"`
 
-	Pin   string  `gorm:"not null;index"`
-	Value float32 `gorm:"not null"`
+	Pin        string  `gorm:"not null;index"`
+	Value      float32 `gorm:"not null"`
+	CreateDate time.Time
 }
 
 func (Indication) TableName() string {
-	return "indication"
+	return "meteo_indication"
 }
