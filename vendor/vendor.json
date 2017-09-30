@@ -9,6 +9,18 @@
 			"revisionTime": "2016-12-15T12:12:41Z"
 		},
 		{
+			"checksumSHA1": "bRzNX5Fa+dq4hyECpY54rMtPWG0=",
+			"path": "github.com/fasthttp-contrib/websocket",
+			"revision": "1f3b11f56072ffc1b0d71659cb0162ccb1b60ac5",
+			"revisionTime": "2016-05-11T21:55:33Z"
+		},
+		{
+			"checksumSHA1": "8KawKW6FJguwWz5cPvMg/ChmepE=",
+			"path": "github.com/gorilla/websocket",
+			"revision": "4201258b820c74ac8e6922fc9e6b52f71fe46f8d",
+			"revisionTime": "2017-09-26T23:33:35Z"
+		},
+		{
 			"checksumSHA1": "BamUjeoJiinINyEjpv1AzKaTue4=",
 			"path": "github.com/jinzhu/gorm",
 			"revision": "c3bb6aaa828867eec72dd8571d111e442688f85f",

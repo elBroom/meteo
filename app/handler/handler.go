@@ -11,17 +11,19 @@ import (
 
 	"regexp"
 
+	"time"
+
 	"github.com/elBroom/meteo/app/config"
 	"github.com/elBroom/meteo/app/db"
 	"github.com/elBroom/meteo/app/model"
 	"github.com/elBroom/meteo/app/schema"
+	"github.com/elBroom/meteo/app/ws"
+	"github.com/fasthttp-contrib/websocket"
 	"github.com/mailru/easyjson"
 	"github.com/valyala/fasthttp"
 )
 
 func CreteValueEndpoint(ctx *fasthttp.RequestCtx) {
-	log.Println("CreteValueEndpoint")
-
 	data := ctx.PostBody()
 	if len(data) == 0 || ctx.UserValue("token") == "" || ctx.UserValue("pin") == "" {
 		ctx.SetStatusCode(http.StatusBadRequest)
@@ -47,13 +49,18 @@ func CreteValueEndpoint(ctx *fasthttp.RequestCtx) {
 	_ = easyjson.Unmarshal(data, &indication)
 	db.Sql_connect().Create(&model.Indication{Value: indication.Value, Pin: disignation.Pin})
 
+	indication.CreatedAt = time.Now().Unix() * 1000
+	indication.Pin = disignation.Pin
+	hub := config.GetApp().Hub
+	if hub != nil {
+		hub.SendMessage(&indication)
+	}
+
 	ctx.SetStatusCode(http.StatusOK)
 	writeStr(ctx, "OK")
 }
 
 func GetValuesEndpoint(ctx *fasthttp.RequestCtx) {
-	log.Println("GetValuesEndpoint")
-
 	if ctx.UserValue("pins") == "" {
 		ctx.SetStatusCode(http.StatusBadRequest)
 		writeStr(ctx, "Invalid params")
@@ -109,6 +116,17 @@ func GetValuesEndpoint(ctx *fasthttp.RequestCtx) {
 	ctx.Response.Header.Set("Content-Length", strconv.Itoa(len(b)))
 	ctx.Response.Header.Set("Connection", "keep-alive")
 	ctx.SetBody(b)
+}
+
+var upgrader = websocket.New(func(conn *websocket.Conn) {
+	ws.ServeWs(config.GetApp().Hub, conn)
+})
+
+func WSEndpoint(ctx *fasthttp.RequestCtx) {
+	if err := upgrader.Upgrade(ctx); err != nil {
+		log.Println(err)
+		return
+	}
 }
 
 func writeStr(ctx *fasthttp.RequestCtx, s string) {

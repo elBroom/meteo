@@ -8,6 +8,7 @@ import (
 
 	"log"
 
+	"github.com/elBroom/meteo/app/ws"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -30,6 +31,7 @@ type App struct {
 	RequestWaitInQueueTimeout time.Duration `yaml:"request_wait_in_queue_timeout"`
 	Port                      int
 	Token                     string
+	Hub                       *ws.Hub
 }
 
 var app App
@@ -58,6 +60,7 @@ func init() {
 		log.Fatalf("can't read app config: %s", err)
 	}
 	RequestWaitInQueueTimeout = time.Second * app.RequestWaitInQueueTimeout
+	app.Hub = ws.NewHub()
 
 	if err := GetYamlConfig("sql", &sql); err != nil {
 		log.Fatalf("can't read sql config: %s", err)

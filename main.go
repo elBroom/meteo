@@ -16,6 +16,8 @@ func main() {
 	defer sql_connect.Close()
 
 	cfg := config.GetApp()
+	go cfg.Hub.Run()
+
 	router := router.Routing()
 	log.Printf("Start server: 127.0.0.1:%d\n", cfg.Port)
 	log.Fatal(fasthttp.ListenAndServe(":"+strconv.Itoa(cfg.Port),

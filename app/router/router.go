@@ -10,5 +10,6 @@ func Routing() *fasthttprouter.Router {
 
 	router.POST("/meteo/:token/update/:pin", handler.CreteValueEndpoint)
 	router.GET("/meteo/get_data/:pins", handler.GetValuesEndpoint)
+	router.GET("/meteo/ws/:channel", handler.WSEndpoint)
 	return router
 }
