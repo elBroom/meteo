@@ -1,3 +1,3 @@
-.idea/
-config/app.yaml
-config/sql.yaml
+.idea/*
+config/app.yml
+config/sql.yml

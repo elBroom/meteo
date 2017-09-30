@@ -1,0 +1,3 @@
+request_wait_in_queue_timeout: 30 # second
+port: 3030
+token: "12345"

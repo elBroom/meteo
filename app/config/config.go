@@ -57,7 +57,7 @@ func init() {
 	if err := GetYamlConfig("app", &app); err != nil {
 		log.Fatalf("can't read app config: %s", err)
 	}
-	RequestWaitInQueueTimeout = time.Millisecond * app.RequestWaitInQueueTimeout
+	RequestWaitInQueueTimeout = time.Second * app.RequestWaitInQueueTimeout
 
 	if err := GetYamlConfig("sql", &sql); err != nil {
 		log.Fatalf("can't read sql config: %s", err)

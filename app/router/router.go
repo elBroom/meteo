@@ -8,7 +8,7 @@ import (
 func Routing() *fasthttprouter.Router {
 	router := fasthttprouter.New()
 
-	router.POST("/meteo/:token/upload", handler.CreteValueEndpoint)
+	router.POST("/meteo/:token/update/:pin", handler.CreteValueEndpoint)
 	router.GET("/meteo/get_data/:pins", handler.GetValuesEndpoint)
 	return router
 }

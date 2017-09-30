@@ -19,5 +19,5 @@ func main() {
 	router := router.Routing()
 	log.Printf("Start server: 127.0.0.1:%d\n", cfg.Port)
 	log.Fatal(fasthttp.ListenAndServe(":"+strconv.Itoa(cfg.Port),
-		fasthttp.TimeoutHandler(router.Handler, cfg.RequestWaitInQueueTimeout, "timeout")))
+		fasthttp.TimeoutHandler(router.Handler, config.RequestWaitInQueueTimeout, "timeout")))
 }
