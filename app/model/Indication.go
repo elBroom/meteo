@@ -6,7 +6,7 @@ type Indication struct {
 	ID uint `gorm:"primary_key"`
 
 	Pin        string  `gorm:"not null;index"`
-	Value      float32 `gorm:"not null"`
+	Value      float64 `gorm:"not null"`
 	CreateDate time.Time
 }
 

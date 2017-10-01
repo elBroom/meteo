@@ -37,7 +37,7 @@ func easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema(in *jlexer.Lexer, out 
 		}
 		switch key {
 		case "value":
-			out.Value = float32(in.Float32())
+			out.Value = float64(in.Float64())
 		case "pin":
 			out.Pin = string(in.String())
 		case "create_date":
@@ -61,7 +61,7 @@ func easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema(out *jwriter.Writer, i
 	}
 	first = false
 	out.RawString("\"value\":")
-	out.Float32(float32(in.Value))
+	out.Float64(float64(in.Value))
 	if in.Pin != "" {
 		if !first {
 			out.RawByte(',')
@@ -122,7 +122,9 @@ func easyjsonCef4e921DecodeGithubComElBroomMeteoAppSchema1(in *jlexer.Lexer, out
 		}
 		for !in.IsDelim(']') {
 			var v1 Disignation
-			(v1).UnmarshalEasyJSON(in)
+			if data := in.Raw(); in.Ok() {
+				in.AddError((v1).UnmarshalJSON(data))
+			}
 			*out = append(*out, v1)
 			in.WantComma()
 		}
@@ -141,7 +143,7 @@ func easyjsonCef4e921EncodeGithubComElBroomMeteoAppSchema1(out *jwriter.Writer, 
 			if v2 > 0 {
 				out.RawByte(',')
 			}
-			(v3).MarshalEasyJSON(out)
+			out.Raw((v3).MarshalJSON())
 		}
 		out.RawByte(']')
 	}

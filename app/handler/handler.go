@@ -45,10 +45,13 @@ func CreteValueEndpoint(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	var indication schema.Indication
-	_ = easyjson.Unmarshal(data, &indication)
-	db.Sql_connect().Create(&model.Indication{Value: indication.Value, Pin: disignation.Pin})
+	value_str := strings.Replace(string(data), "value=", "", 1)
+	value, _ := strconv.ParseFloat(value_str, 64)
 
+	db.Sql_connect().Create(&model.Indication{CreateDate: time.Now(), Value: value, Pin: disignation.Pin})
+
+	var indication schema.Indication
+	indication.Value = value
 	indication.CreateDate = time.Now().Unix() * 1000
 	indication.Pin = disignation.Pin
 	hub := config.GetApp().Hub
