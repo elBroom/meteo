@@ -9,10 +9,22 @@
 			"revisionTime": "2016-12-15T12:12:41Z"
 		},
 		{
+			"checksumSHA1": "94NefBZ4UTXLh9WOuqAdciK1Oew=",
+			"path": "github.com/certifi/gocertifi",
+			"revision": "3fd9e1adb12b72d2f3f82191d49be9b93c69f67c",
+			"revisionTime": "2017-07-27T15:51:24Z"
+		},
+		{
 			"checksumSHA1": "bRzNX5Fa+dq4hyECpY54rMtPWG0=",
 			"path": "github.com/fasthttp-contrib/websocket",
 			"revision": "1f3b11f56072ffc1b0d71659cb0162ccb1b60ac5",
 			"revisionTime": "2016-05-11T21:55:33Z"
+		},
+		{
+			"checksumSHA1": "v80i7OW4AhVGbebGd7oTyfpV/Oc=",
+			"path": "github.com/getsentry/raven-go",
+			"revision": "1452f6376ddb15c546b6d7567e1d9518765391b5",
+			"revisionTime": "2017-09-18T07:31:04Z"
 		},
 		{
 			"checksumSHA1": "8KawKW6FJguwWz5cPvMg/ChmepE=",

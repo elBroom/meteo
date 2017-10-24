@@ -19,11 +19,18 @@ import (
 	"github.com/elBroom/meteo/app/schema"
 	"github.com/elBroom/meteo/app/ws"
 	"github.com/fasthttp-contrib/websocket"
+	"github.com/getsentry/raven-go"
 	"github.com/mailru/easyjson"
 	"github.com/valyala/fasthttp"
 )
 
+func init() {
+	raven.SetDSN(config.GetApp().SentryDsn)
+}
+
 func CreteValueEndpoint(ctx *fasthttp.RequestCtx) {
+	log.Print(ctx.RemoteIP(), " ", string(ctx.Path()), " ", string(ctx.UserAgent()))
+
 	data := ctx.PostBody()
 	if len(data) == 0 || ctx.UserValue("token") == "" || ctx.UserValue("pin") == "" {
 		ctx.SetStatusCode(http.StatusBadRequest)
@@ -64,6 +71,8 @@ func CreteValueEndpoint(ctx *fasthttp.RequestCtx) {
 }
 
 func GetValuesEndpoint(ctx *fasthttp.RequestCtx) {
+	log.Print(ctx.RemoteIP(), " ", string(ctx.Path()), " ", string(ctx.UserAgent()))
+
 	if ctx.UserValue("pins") == "" {
 		ctx.SetStatusCode(http.StatusBadRequest)
 		writeStr(ctx, "Invalid params")

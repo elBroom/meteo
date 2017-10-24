@@ -29,7 +29,7 @@ func Sql_connect() *gorm.DB {
 		log.Fatal(err)
 	}
 
-	//sql_connect.LogMode(true)
+	sql_connect.LogMode(true)
 
 	sql_connect.AutoMigrate(&model.Disignation{}, &model.Indication{})
 

@@ -32,6 +32,7 @@ type App struct {
 	Port                      int
 	Token                     string
 	Hub                       *ws.Hub
+	SentryDsn                 string
 }
 
 var app App
